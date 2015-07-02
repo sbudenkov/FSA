@@ -103,24 +103,17 @@ if (mode == 1):
             for column in table["column"]:
                 row.append(column["#text"].encode('utf8'))
                 if column["@name"] == "text":
-                    # row_text.append(column["#text"].encode('utf8'))
                     text = column["#text"].encode('utf8')
                 if column["@name"] in header_ttk_names:
                     if column["#text"] == "0":
                         tsv_out_text.writerow(["neutral", text])
                     elif column["#text"] == "1":
-                        # row_text.insert(0, "positive")
                         tsv_out_text.writerow(["positive", text])
                     elif column["#text"] == "-1":
-                        # row_text.insert(0, "negative")
                         tsv_out_text.writerow(["negative", text])
-                # print column["@name"] + '\t' + column["#text"]
             tsv_out.writerow(row)
 
-
-
-    # print obj['pma_xml_export']['database']['@name']
-    # writer.close()
+    print "Successfully converted"
 
 # Load train data and train model
 if (mode == 2):
