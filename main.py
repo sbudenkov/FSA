@@ -28,6 +28,8 @@ if __name__ == '__main__':
     file_test_bank = ".\\data\\SentiRuEval_twitter\\bank_test.xml"
     file_train_ttk = ".\\data\\SentiRuEval_twitter\\ttk_train.xml"
     file_test_ttk = ".\\data\\SentiRuEval_twitter\\ttk_test.xml"
+    file_test_ttk_etalon = ".\\data\\SentiRuEval_twitter\\eval\\ttk_test_etalon.xml"
+    file_test_bank_etalon = ".\\data\\SentiRuEval_twitter\\eval\\bank_test_etalon.xml"
 
     # Entry point
     print "Menu:"
@@ -84,7 +86,7 @@ if __name__ == '__main__':
 
     if (mode == 1):
         # file_in = str(raw_input("Please select input file: \n"))
-        file_in = file_train_ttk
+        file_in = file_test_bank_etalon
 
         # Define variables
         header_ttk = ['id', 'twitid', 'date', 'text', 'beeline',
@@ -101,13 +103,13 @@ if __name__ == '__main__':
 
         with open(file_in) as xml_in, \
              open("out.tsv", "wb") as tsv_out, \
-             open(".\\data\\parsed\\ttk_train.tsv", "wb") as tsv_out_text:
+             open(".\\data\\parsed\\bank_test_etalon.tsv", "wb") as tsv_out_text:
             obj = xmltodict.parse(xml_in.read())
             tsv_out = csv.writer(tsv_out, delimiter='\t')
             tsv_out_text = csv.writer(tsv_out_text, delimiter='\t')
 
             # Write header
-            tsv_out.writerow(header_ttk)
+            tsv_out.writerow(header_bank)
             tsv_out_text.writerow(["sentiment", "text"])
 
             # Write data
@@ -118,7 +120,7 @@ if __name__ == '__main__':
                     row.append(column["#text"].encode('utf8'))
                     if column["@name"] == "text":
                         text = column["#text"].encode('utf8')
-                    if column["@name"] in header_ttk_names:
+                    if column["@name"] in header_bank_names:
                         if column["#text"] == "0":
                             tsv_out_text.writerow(["neutral", text])
                         elif column["#text"] == "1":
@@ -133,7 +135,7 @@ if __name__ == '__main__':
     if (mode == 2):
         print "Train model"
         # data_dir = sys.argv[1]
-        classes = ['pos', 'neg']
+        classes = ['pos', 'neg', 'net']
 
         # Read the data
         train_data = []
@@ -153,7 +155,7 @@ if __name__ == '__main__':
         #                 train_data.append(content)
         t0 = time.time()
         with open(".\\data\\parsed\\bank_train.tsv") as train_in, \
-            open(".\\data\\parsed\\bank_test.tsv") as test_in:
+            open(".\\data\\parsed\\bank_test_etalon.tsv") as test_in:
             train_in = csv.reader(train_in, delimiter='\t')
             test_in  = csv.reader(test_in, delimiter='\t')
             for row in train_in:
@@ -163,6 +165,9 @@ if __name__ == '__main__':
                 elif row[0] == "negative":
                     train_data.append(row[1])
                     train_labels.append("neg")
+                elif row[0] == "neutral":
+                    train_data.append(row[1])
+                    train_labels.append("net")
             for row in test_in:
                 if row[0] == "positive":
                     test_data.append(row[1])
@@ -170,6 +175,9 @@ if __name__ == '__main__':
                 elif row[0] == "negative":
                     test_data.append(row[1])
                     test_labels.append("neg")
+                elif row[0] == "neutral":
+                    test_data.append(row[1])
+                    test_labels.append("net")
         t1 = time.time()
         time_load_data = t1-t0
         print "Load data in: " + str(time_load_data) + "s"
@@ -218,10 +226,10 @@ if __name__ == '__main__':
         print(classification_report(test_labels, prediction_rbf))
         print("Results for SVC(kernel=linear)")
         print("Training time: %fs; Prediction time: %fs" % (time_linear_train, time_linear_predict))
-        # print(classification_report(test_labels, prediction_linear))
+        print(classification_report(test_labels, prediction_linear))
         print("Results for LinearSVC()")
         print("Training time: %fs; Prediction time: %fs" % (time_liblinear_train, time_liblinear_predict))
-        # print(classification_report(test_labels, prediction_liblinear))
+        print(classification_report(test_labels, prediction_liblinear))
 
     # Load model, test data and perform prediction
     if (mode == 3):
