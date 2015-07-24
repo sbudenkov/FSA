@@ -21,39 +21,42 @@ class Porter:
 		word = word.lower()
 		word = word.replace(u'ё', u'е')
 		m = re.match(Porter.RVRE, word)
-		if m.groups():
-			pre = m.group(1)
-			rv = m.group(2)
-			temp = Porter.PERFECTIVEGROUND.sub('', rv, 1)
-			if temp == rv:
-				rv = Porter.REFLEXIVE.sub('', rv, 1)
-				temp = Porter.ADJECTIVE.sub('', rv, 1)
-				if temp != rv:
-					rv = temp
-					rv = Porter.PARTICIPLE.sub('', rv, 1)
-				else:
-					temp = Porter.VERB.sub('', rv, 1)
-					if temp == rv:
-						rv = Porter.NOUN.sub('', rv, 1)
-					else:
+		try:
+			if m.groups():
+				pre = m.group(1)
+				rv = m.group(2)
+				temp = Porter.PERFECTIVEGROUND.sub('', rv, 1)
+				if temp == rv:
+					rv = Porter.REFLEXIVE.sub('', rv, 1)
+					temp = Porter.ADJECTIVE.sub('', rv, 1)
+					if temp != rv:
 						rv = temp
-			else:
-				rv = temp
-			
-			rv = Porter.I.sub('', rv, 1)
- 
-			if re.match(Porter.DERIVATIONAL, rv):
-				rv = Porter.DER.sub('', rv, 1)
- 
-			temp = Porter.P.sub('', rv, 1)
-			if temp == rv:
-				rv = Porter.SUPERLATIVE.sub('', rv, 1)
-				rv = Porter.NN.sub(u'н', rv, 1)
-			else:
-				rv = temp
-			word = pre+rv
-		return word
+						rv = Porter.PARTICIPLE.sub('', rv, 1)
+					else:
+						temp = Porter.VERB.sub('', rv, 1)
+						if temp == rv:
+							rv = Porter.NOUN.sub('', rv, 1)
+						else:
+							rv = temp
+				else:
+					rv = temp
+
+				rv = Porter.I.sub('', rv, 1)
+
+				if re.match(Porter.DERIVATIONAL, rv):
+					rv = Porter.DER.sub('', rv, 1)
+
+				temp = Porter.P.sub('', rv, 1)
+				if temp == rv:
+					rv = Porter.SUPERLATIVE.sub('', rv, 1)
+					rv = Porter.NN.sub(u'н', rv, 1)
+				else:
+					rv = temp
+				word = pre+rv
+			return word
+		except:
+			return word
 	stem=staticmethod(stem)
  
 if __name__ == '__main__':
-	print Porter.stem(u'устойчивость')
+	print Porter.stem(u'обреченность')
