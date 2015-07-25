@@ -4,13 +4,15 @@ import time
 import string
 import csv
 import json
+from collections import Counter
 
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.svm import SVC, LinearSVC
 from sklearn.metrics import classification_report
 import cPickle as pickle
 
-from train_model import preprocess
+# from train_model import preprocess
+from preprocessing import preprocess
 
 def test():
     use_stem = True
@@ -20,10 +22,22 @@ def test():
     tsv_out = csv.writer(tsv_out1, delimiter='\t')
 
     test_json = open(".\\src\\test.json")
+    count_all = Counter()
     for r in test_json:
-        data = json.loads(r)
-        print data["text"].encode(sys.stdout.encoding, errors='replace')
-        tsv_out.writerow(["hz", data["text"].encode("utf-8")])
+        tweet = json.loads(r)
+        # Create a list with all the terms
+        terms_all = [term for term in preprocess(tweet['text'], True)]
+        # Update the counter
+        count_all.update(terms_all)
+        # tokens = preprocess(tweet['text'], True)
+        # for token in tokens:
+        #     print token
+
+        # print tweet["text"].encode(sys.stdout.encoding, errors='replace')
+        # tsv_out.writerow(["hz", tweet["text"].encode("utf-8")])
+    for token in count_all.most_common(5):
+        print token[0] + ":" + str(token[1])
+    exit()
     tsv_out1.close()
     # exit(0)
 

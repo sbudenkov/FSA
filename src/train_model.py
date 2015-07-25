@@ -8,6 +8,7 @@ from sklearn.metrics import classification_report
 import cPickle as pickle
 
 from stemming import Porter
+from preprocessing import preprocess
 
 def stem(str_in):
     str = "".join([ch for ch in str_in if ch not in string.punctuation + "..."])
@@ -18,30 +19,32 @@ def stem(str_in):
         res.append(new_word)
     return " ".join([ch for ch in res])
 
-def preprocess(file, stemming=False):
+def prepare_data(file, categories, lowercase=True, stemming=False):
     data = []
     labels = []
     for row in file:
-        if row[0] == "positive":
-            if stemming:
-                str1 = stem(row[1].decode("utf-8").lower())
-            else:
-                str1 = row[1].decode("utf-8").lower()
-            data.append(str1)
-            labels.append("pos")
-        elif row[0] == "negative":
-            # str1 = stem(row[1].decode("utf-8").lower())
-            str1 = row[1].decode("utf-8").lower()
-            data.append(str1)
-            labels.append("neg")
-        elif row[0] == "hz":
-            # str1 = stem(row[1].decode("utf-8").lower())
-            if stemming:
-                str1 = stem(row[1].decode("utf-8").lower())
-            else:
-                str1 = row[1].lower()
-            data.append(str1)
-            labels.append("hz")
+        for ctg in categories:
+            if row[0] == ctg:
+                if(ctg == "negative"):
+                    tokens = preprocess(row[1].decode("utf-8"), lowercase, False)
+                else:
+                    tokens = preprocess(row[1].decode("utf-8"), lowercase, stemming)
+                new_str = " ".join([token for token in tokens])
+                data.append(new_str)
+                labels.append(ctg)
+        # elif row[0] == "negative":
+        #     # str1 = stem(row[1].decode("utf-8").lower())
+        #     str1 = row[1].decode("utf-8").lower()
+        #     data.append(str1)
+        #     labels.append("neg")
+        # elif row[0] == "hz":
+        #     # str1 = stem(row[1].decode("utf-8").lower())
+        #     if stemming:
+        #         str1 = stem(row[1].decode("utf-8").lower())
+        #     else:
+        #         str1 = row[1].lower()
+        #     data.append(str1)
+        #     labels.append("hz")
         # elif row[0] == "neutral":
         #     train_data.append(row[1])
         #     train_labels.append("net")
@@ -49,8 +52,9 @@ def preprocess(file, stemming=False):
 
 def train(train_in, test_in):
     print "Train model ..."
-    classes = ['pos', 'neg']#, 'net']
-    use_stem = True
+    categories = ['positive', 'negative']
+    # categories = ['positive', 'negative', 'neutral']
+    use_stem = False
     # Read the data
     train_data = []
     train_labels = []
@@ -59,12 +63,17 @@ def train(train_in, test_in):
 
     t0 = time.time()
 
-    train_data, train_labels = preprocess(train_in, use_stem)
-    test_data, test_labels = preprocess(test_in, use_stem)
+    train_data, train_labels = prepare_data(train_in, categories, stemming=use_stem)
+    test_data, test_labels = prepare_data(test_in, categories, stemming=use_stem)
 
-    t1 = time.time()
-    time_load_data = t1-t0
-    print "Pre process: " + str(time_load_data) + "s"
+    duration = time.time() - t0
+    print "Pre process: " + str(duration) + "sec"
+    with open("prep.txt", "wb") as result_out:
+        i = 0
+        for s in train_data:
+            result_out.write(train_labels[i].encode("utf-8") + '\t' + train_data[i].encode("utf-8") + '\n')
+            i += 1
+    # exit()
 
     # Create feature vectors
     vectorizer = TfidfVectorizer(min_df=2,
@@ -110,15 +119,15 @@ def train(train_in, test_in):
     time_liblinear_predict = t2-t1
 
     # Print results in a nice table
-    print("Results for SVC(kernel=rbf)")
-    print("Training time: %fs; Prediction time: %fs" % (time_rbf_train, time_rbf_predict))
-    print(classification_report(test_labels, prediction_rbf))
-    with open("result_rbf.txt", "wb") as result_out:
-        i = 0
-        for s in prediction_rbf:
-            if (test_labels[i] != prediction_rbf[i]):
-                result_out.write(test_labels[i] + " : " + prediction_rbf[i] + '\t' + test_data[i].encode("utf-8") + '\n')
-            i += 1
+    # print("Results for SVC(kernel=rbf)")
+    # print("Training time: %fs; Prediction time: %fs" % (time_rbf_train, time_rbf_predict))
+    # print(classification_report(test_labels, prediction_rbf))
+    # with open("result_rbf.txt", "wb") as result_out:
+    #     i = 0
+    #     for s in prediction_rbf:
+    #         if (test_labels[i] != prediction_rbf[i]):
+    #             result_out.write(test_labels[i] + " : " + prediction_rbf[i] + '\t' + test_data[i].encode("utf-8") + '\n')
+    #         i += 1
     # exit(0)
     print("Results for SVC(kernel=linear)")
     print("Training time: %fs; Prediction time: %fs" % (time_linear_train, time_linear_predict))

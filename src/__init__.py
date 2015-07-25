@@ -9,4 +9,4 @@ import time
 # импорт компонентов приложения; загрузка пользовательских файлов *.py
 # from features import Emoticons, DictionaryTest
 # from datalink import DatabaseConnectionDown
-from data_proc import PrepareData
+# from data_proc import PrepareData

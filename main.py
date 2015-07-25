@@ -2,7 +2,7 @@
 __author__ = 'Семен'
 
 # from src import features, datalink, hashtags, plot
-from src import data_proc
+# from src import data_proc
 # TODO move to init
 import sys
 import os
