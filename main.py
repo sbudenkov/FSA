@@ -144,7 +144,7 @@ if __name__ == '__main__':
                 for column in table["column"]:
                     row.append(column["#text"].encode('utf8'))
                     if column["@name"] == "text":
-                        text = column["#text"].encode('utf8')
+                        text = column["#text"].encode('utf8').replace('\n', ' ')
                     if column["@name"] in header_names:
                         if column["#text"] == "0":
                             tsv_out_text.writerow(["neutral", text])
