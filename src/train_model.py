@@ -54,7 +54,7 @@ def train(train_in, test_in):
     print "Train model ..."
     categories = ['positive', 'negative']
     # categories = ['positive', 'negative', 'neutral']
-    use_stem = False
+    use_stem = True
     # Read the data
     train_data = []
     train_labels = []
@@ -72,6 +72,12 @@ def train(train_in, test_in):
         i = 0
         for s in train_data:
             result_out.write(train_labels[i].encode("utf-8") + '\t' + train_data[i].encode("utf-8") + '\n')
+            i += 1
+
+    with open("prop.txt", "wb") as result_out:
+        i = 0
+        for s in test_data:
+            result_out.write(test_labels[i].encode("utf-8") + '\t' + test_data[i].encode("utf-8") + '\n')
             i += 1
     # exit()
 

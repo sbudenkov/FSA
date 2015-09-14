@@ -25,6 +25,8 @@ def test():
     count_all = Counter()
     for r in test_json:
         tweet = json.loads(r)
+        if (tweet["lang"] != "ru"):
+            continue
         # Create a list with all the terms
         terms_all = [term for term in preprocess(tweet['text'], True)]
         # Update the counter

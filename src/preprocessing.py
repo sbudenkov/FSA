@@ -38,7 +38,17 @@ def preprocess(s, lowercase=False, stemming=False):
         punctuation = list(string.punctuation)
         # stop = stopwords.words('russian') + punctuation + ['rt', 'via']
         stop = punctuation + ['rt', 'via', '...', "…".decode("utf-8")]
+        # stop += stopwords.words('russian')
+        # tokens1 = []
+        # for token in tokens:
+        #     if emoticon_re.search(token):
+        #         tokens1.append(token)
+        #     elif token not in stop:
+        #         tokens1.append(token)
+        # tokens = tokens1
         tokens = [token for token in tokens if token not in stop]
+
+        # tokens = [token if token emoticon_re.search(token) else not in stop for token in tokens]
     if stemming:
         tokens = [token if emoticon_re.search(token) else Porter.stem(token) for token in tokens]
     return tokens
