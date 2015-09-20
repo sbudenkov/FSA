@@ -52,7 +52,7 @@ class KaggleWord2VecUtility(object):
             # If a sentence is empty, skip it
             if len(raw_sentence) > 0:
                 # Otherwise, call review_to_wordlist to get a list of words
-                sentences.append( KaggleWord2VecUtility.review_to_wordlist( raw_sentence, \
+                sentences.append( KaggleWord2VecUtility.review_to_wordlist( raw_sentence,
                   remove_stopwords ))
         #
         # Return the list of sentences (each sentence is a list of words,
@@ -82,5 +82,5 @@ class FuzzyWord2VecUtility(object):
         #
         # 5. Return a list of words
         # print (text.decode("utf-8"))
-        words = preprocess(text.decode("utf-8"), True, False)
+        words = preprocess(text.decode("utf-8"), True, remove_stopwords)
         return(words)

@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-
+# -*- coding: utf-8 -*-
 #  Author: Angela Chapman
 #  Date: 8/6/2014
 #
@@ -15,6 +15,7 @@
 # Load a pre-trained model
 from gensim.models import Word2Vec
 from sklearn.cluster import KMeans
+from sklearn.metrics import classification_report
 import time
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
@@ -23,7 +24,7 @@ import re
 from nltk.corpus import stopwords
 import numpy as np
 import os
-from KaggleWord2VecUtility import KaggleWord2VecUtility
+from KaggleWord2VecUtility import KaggleWord2VecUtility, FuzzyWord2VecUtility
 
 
 # Define a function to create bags of centroids
@@ -88,6 +89,9 @@ if __name__ == '__main__':
         # Find all of the words for that cluster number, and print them out
         words = []
         for i in xrange(0,len(word_centroid_map.values())):
+            # v = word_centroid_map.values()[i] == cluster
+            # print word_centroid_map.values()[i]
+            # exit(0)
             if( word_centroid_map.values()[i] == cluster ):
                 words.append(word_centroid_map.keys()[i])
         print words
@@ -99,44 +103,47 @@ if __name__ == '__main__':
     #
 
     # Read data from files
-    train = pd.read_csv( os.path.join(os.path.dirname(__file__), 'data', 'labeledTrainData.tsv'), header=0, delimiter="\t", quoting=3 )
-    test = pd.read_csv(os.path.join(os.path.dirname(__file__), 'data', 'testData.tsv'), header=0, delimiter="\t", quoting=3 )
-
+    # train = pd.read_csv( os.path.join(os.path.dirname(__file__), 'data', 'labeledTrainData.tsv'), header=0, delimiter="\t", quoting=3 )
+    # test = pd.read_csv(os.path.join(os.path.dirname(__file__), 'data', 'testData.tsv'), header=0, delimiter="\t", quoting=3 )
+    train = pd.read_csv('C:\\proj\\FSA-imp\\data\\parsed\\ttk_train.tsv',
+                        header=0,
+                        delimiter="\t",
+                        quoting=3)
+    test = pd.read_csv('C:\\proj\\FSA-imp\\data\\parsed\\ttk_test_etalon.tsv',
+                       header=0,
+                       delimiter="\t",
+                       quoting=3)
 
     print "Cleaning training reviews"
     clean_train_reviews = []
-    for review in train["review"]:
-        clean_train_reviews.append( KaggleWord2VecUtility.review_to_wordlist( review, \
-            remove_stopwords=True ))
+    for review in train["text"]:
+        # clean_train_reviews.append( KaggleWord2VecUtility.review_to_wordlist( review, remove_stopwords=True ))
+        clean_train_reviews.append(FuzzyWord2VecUtility.text_to_wordlist(review, remove_stopwords=True))
 
     print "Cleaning test reviews"
     clean_test_reviews = []
-    for review in test["review"]:
-        clean_test_reviews.append( KaggleWord2VecUtility.review_to_wordlist( review, \
-            remove_stopwords=True ))
+    for review in test["text"]:
+        # clean_test_reviews.append( KaggleWord2VecUtility.review_to_wordlist( review, remove_stopwords=True ))
+        clean_test_reviews.append(FuzzyWord2VecUtility.text_to_wordlist(review, remove_stopwords=True))
 
 
     # ****** Create bags of centroids
     #
     # Pre-allocate an array for the training set bags of centroids (for speed)
-    train_centroids = np.zeros( (train["review"].size, num_clusters), \
-        dtype="float32" )
+    train_centroids = np.zeros( (train["text"].size, num_clusters), dtype="float32" )
 
     # Transform the training set reviews into bags of centroids
     counter = 0
     for review in clean_train_reviews:
-        train_centroids[counter] = create_bag_of_centroids( review, \
-            word_centroid_map )
+        train_centroids[counter] = create_bag_of_centroids( review, word_centroid_map )
         counter += 1
 
     # Repeat for test reviews
-    test_centroids = np.zeros(( test["review"].size, num_clusters), \
-        dtype="float32" )
+    test_centroids = np.zeros(( test["text"].size, num_clusters), dtype="float32" )
 
     counter = 0
     for review in clean_test_reviews:
-        test_centroids[counter] = create_bag_of_centroids( review, \
-            word_centroid_map )
+        test_centroids[counter] = create_bag_of_centroids( review, word_centroid_map )
         counter += 1
 
 
@@ -150,6 +157,8 @@ if __name__ == '__main__':
     result = forest.predict(test_centroids)
 
     # Write the test results
-    output = pd.DataFrame(data={"id":test["id"], "sentiment":result})
-    output.to_csv("BagOfCentroids.csv", index=False, quoting=3)
+    output = pd.DataFrame(data={"target":test["sentiment"], "sentiment":result})
+    print(classification_report(test["sentiment"], result))
+
+    output.to_csv("C:\\proj\\FSA-imp\\results\\BagOfCentroids.csv", index=False, quoting=3)
     print "Wrote BagOfCentroids.csv"
