@@ -11,3 +11,6 @@ FSA include following features:
   * training of classifiers
   * testing saved classifiers
   * classification reports with plots
+  
+ ### How to use:
+  soon

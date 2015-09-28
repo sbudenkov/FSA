@@ -24,6 +24,7 @@ from __future__ import division, print_function
 import numpy as np
 import matplotlib.pyplot as plt
 import skfuzzy as fuzz
+from gensim.models import Word2Vec
 
 colors = ['b', 'orange', 'g', 'r', 'c', 'm', 'y', 'k', 'Brown', 'ForestGreen']
 
@@ -69,11 +70,13 @@ Let's try clustering our data several times, with between 2 and 9 clusters.
 
 """
 # Set up the loop and plot
-fig1, axes1 = plt.subplots(3, 3, figsize=(8, 8))
-alldata = np.vstack((xpts, ypts))
+fig1, axes1 = plt.subplots(6, 6, figsize=(8, 8))
+# alldata = np.vstack((xpts, ypts))
+model = Word2Vec.load("C:\\proj\\FSA-imp\\src\\word2vec\\300features_40minwords_10context")
+alldata = model.syn0
 fpcs = []
-
 for ncenters, ax in enumerate(axes1.reshape(-1), 2):
+    print (ncenters)
     cntr, u, u0, d, jm, p, fpc = fuzz.cluster.cmeans(
         alldata, ncenters, 2, error=0.005, maxiter=1000, init=None)
 
@@ -82,9 +85,11 @@ for ncenters, ax in enumerate(axes1.reshape(-1), 2):
 
     # Plot assigned clusters, for each data point in training set
     cluster_membership = np.argmax(u, axis=0)
-    for j in range(ncenters):
-        ax.plot(xpts[cluster_membership == j],
-                ypts[cluster_membership == j], '.', color=colors[j])
+    # for j in range(ncenters):
+        # ax.plot(xpts[cluster_membership == j],
+        #         ypts[cluster_membership == j], '.', color=colors[j])
+        # ax.plot(xpts[cluster_membership == j],
+        #         ypts[cluster_membership == j], '.', color=colors[j])
 
     # Mark the center of each fuzzy cluster
     for pt in cntr:
@@ -111,9 +116,11 @@ maximized, our data is described best.
 """
 
 fig2, ax2 = plt.subplots()
-ax2.plot(np.r_[2:11], fpcs)
+ax2.plot(np.r_[2:38], fpcs)
 ax2.set_xlabel("Number of centers")
 ax2.set_ylabel("Fuzzy partition coefficient")
+plt.show()
+exit(0)
 
 """
 .. image:: PLOT2RST.current_figure

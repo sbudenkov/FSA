@@ -64,7 +64,11 @@ if __name__ == '__main__':
     # Set "k" (num_clusters) to be 1/5th of the vocabulary size, or an
     # average of 5 words per cluster
     word_vectors = model.syn0
+    # for i in xrange(0,10):
+    #     print word_vectors[i]
+    # exit(0)
     num_clusters = word_vectors.shape[0] / 5
+    num_clusters = 2
 
     # Initalize a k-means object and use it to extract centroids
     print "Running C means"

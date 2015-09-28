@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-__author__ = 'Семен'
 
 # from src import features, datalink, hashtags, plot
 # from src import data_proc
