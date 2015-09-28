@@ -3,7 +3,6 @@
 Fuzzy Sentiment Analysis is project for detecting emotions in short text messages on russian language.
 
 FSA include following features:
- 
     * loading and preprocessing text files in raw format
     * tokenizing and lemmatization russian texts
     * text modeling
