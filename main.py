@@ -1,12 +1,10 @@
 # -*- coding: utf-8 -*-
 
-# from src import features, datalink, hashtags, plot
-# from src import data_proc
-# TODO move to init
 import sys
 import os
 import csv
 import xmltodict
+import pandas
 
 from train_model import train
 from test_model import test
@@ -21,12 +19,12 @@ if __name__ == '__main__':
     #     sys.exit(1)
 
     # Hardcoded input files
-    file_train_bank = ".\\data\\SentiRuEval_twitter\\bank_train.xml"
-    file_test_bank = ".\\data\\SentiRuEval_twitter\\bank_test.xml"
-    file_train_ttk = ".\\data\\SentiRuEval_twitter\\ttk_train.xml"
-    file_test_ttk = ".\\data\\SentiRuEval_twitter\\ttk_test.xml"
-    file_test_ttk_etalon = ".\\data\\SentiRuEval_twitter\\eval\\ttk_test_etalon.xml"
-    file_test_bank_etalon = ".\\data\\SentiRuEval_twitter\\eval\\bank_test_etalon.xml"
+    file_train_bank         = ".\\data\\SentiRuEval_twitter\\bank_train.xml"
+    file_test_bank          = ".\\data\\SentiRuEval_twitter\\bank_test.xml"
+    file_train_ttk          = ".\\data\\SentiRuEval_twitter\\ttk_train.xml"
+    file_test_ttk           = ".\\data\\SentiRuEval_twitter\\ttk_test.xml"
+    file_test_ttk_etalon    = ".\\data\\SentiRuEval_twitter\\eval\\ttk_test_etalon.xml"
+    file_test_bank_etalon   = ".\\data\\SentiRuEval_twitter\\eval\\bank_test_etalon.xml"
 
     # Entry point
     print "Menu:"
@@ -82,16 +80,15 @@ if __name__ == '__main__':
         UNIQUE KEY `id_2` (`twitid`)
     """
 
+    # Converting SentiRuEval data
     if (mode == 1):
         raw_files_path = ".\\data\\raw\\"
-        header_ttk = ['id', 'twitid', 'date', 'text', 'beeline',
-                       'mts', 'megafon', 'tele2', 'rostelecom',
-                       'komstar', 'skylink']
-        header_ttk_names = ['beeline', 'mts', 'megafon', 'tele2', 'rostelecom',
-                            'komstar', 'skylink']
-        header_bank = ['id', 'twitid', 'date', 'text', 'sberbank',
-                       'vtb', 'gazprom', 'alfabank', 'bankmoskvy',
-                       'raiffeisen', 'uralsib', 'rshb']
+        header_ttk = ['id', 'twitid', 'date', 'text', 'beeline','mts',
+                      'megafon', 'tele2', 'rostelecom', 'komstar', 'skylink']
+        header_ttk_names = ['beeline', 'mts', 'megafon', 'tele2',
+                            'rostelecom', 'komstar', 'skylink']
+        header_bank = ['id', 'twitid', 'date', 'text', 'sberbank', 'vtb',
+                       'gazprom', 'alfabank', 'bankmoskvy', 'raiffeisen', 'uralsib', 'rshb']
         header_bank_names = ['sberbank', 'vtb', 'gazprom', 'alfabank', 'bankmoskvy',
                              'raiffeisen', 'uralsib', 'rshb']
 
@@ -103,6 +100,7 @@ if __name__ == '__main__':
             i += 1
 
         file_ix = int(raw_input("Select file: "))
+
         if file_ix > i:
             print "Error: select file"
             exit(0)
@@ -111,6 +109,7 @@ if __name__ == '__main__':
         print "File type:"
         print "1. ttk"
         print "2. bank"
+
         file_type = int(raw_input("Select type: "))
 
         if file_type == 1:
@@ -170,18 +169,21 @@ if __name__ == '__main__':
         train_data = int(raw_input("Select data: "))
 
         if (train_data == 1):
-            train_file = ".\\data\\parsed\\ttk_train.tsv"
-            test_file  = ".\\data\\parsed\\ttk_test_etalon.tsv"
+            train_file = "./data/parsed/ttk_train.tsv"
+            test_file  = "./data/parsed/ttk_test_etalon.tsv"
         elif (train_data == 2):
-            train_file = ".\\data\\parsed\\bank_train.tsv"
-            test_file  = ".\\data\\parsed\\bank_test_etalon.tsv"
+            train_file = "./data/parsed/bank_train.tsv"
+            test_file  = "./data/parsed/bank_test_etalon.tsv"
         else:
             exit()
 
         with open(train_file) as train_in, \
             open(test_file) as test_in:
-            train_in = csv.reader(train_in, delimiter='\t')
-            test_in  = csv.reader(test_in, delimiter='\t')
+            # train_in = csv.reader(train_in, delimiter='\t')
+            # test_in  = csv.reader(test_in, delimiter='\t')
+            train_in = pandas.read_csv(train_in, sep='\t', skiprows=[0], header=None)
+            test_in  = pandas.read_csv(test_in, sep='\t', skiprows=[0], header=None)
+
             if (train_type == 1):
                 print("pre")
             elif (train_type == 2):
@@ -199,18 +201,3 @@ if __name__ == '__main__':
         exit(1)
 
     exit(0)
-
-    # dblink = datalink.DatabaseConnectionDown('perilipsi_tweets')
-    # plotter = plot.Plotter()
-    # emoTest = features.Emoticons()
-    # dictTest = features.DictionaryTest()
-    # hashtest = hashtags.hashtags()
-    # # You can pass anything you want
-    # testTweet, tweetTime = dblink.fetchTweet(
-    # )['tweet'], dblink.fetchTweet()['time']
-    # emo_test = emoTest.analyse(testTweet)
-    # dict_test = dictTest.analyse(testTweet)
-    # hash_test = hashtest.analyseHashtagTweet(testTweet)
-    # print "Emoticons:", emo_test
-    # print "DictionaryTest:", dict_test
-    # print "Hashtags: ", hash_test
