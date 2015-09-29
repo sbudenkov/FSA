@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-import sys
-import time
-import string
+
 import csv
 import json
 from collections import Counter
@@ -14,7 +12,7 @@ import cPickle as pickle
 # from train_model import preprocess
 from preprocessing import preprocess
 
-def test():
+def test(categories):
     use_stem = True
     test_data = []
     test_labels = []

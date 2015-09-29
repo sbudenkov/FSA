@@ -157,6 +157,10 @@ if __name__ == '__main__':
 
         print "Successfully converted"
 
+    # Categories for training and predictions
+    categories = ['positive', 'negative']
+    # categories = ['positive', 'negative', 'neutral']
+
     # Load train data and train model
     if (mode == 2):
         print "Run:"
@@ -179,22 +183,22 @@ if __name__ == '__main__':
 
         with open(train_file) as train_in, \
             open(test_file) as test_in:
-            # train_in = csv.reader(train_in, delimiter='\t')
-            # test_in  = csv.reader(test_in, delimiter='\t')
-            train_in = pandas.read_csv(train_in, sep='\t', skiprows=[0], header=None)
-            test_in  = pandas.read_csv(test_in, sep='\t', skiprows=[0], header=None)
+            train_in = csv.reader(train_in, delimiter='\t')
+            test_in  = csv.reader(test_in, delimiter='\t')
+            # train_in = pandas.read_csv(train_in, sep='\t', skiprows=[0], header=None)
+            # test_in  = pandas.read_csv(test_in, sep='\t', skiprows=[0], header=None)
 
             if (train_type == 1):
                 print("pre")
             elif (train_type == 2):
-                train(train_in, test_in)
+                train(train_in, test_in, categories)
             else:
                 exit()
 
     # Load model, test data and perform prediction
     if (mode == 3):
         print "Test model ..."
-        test()
+        test(categories)
 
     if (mode == 4):
         print "Press any key for exit"
