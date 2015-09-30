@@ -29,7 +29,11 @@ from    KaggleWord2VecUtility import KaggleWord2VecUtility, FuzzyWord2VecUtility
 def create_bag_of_centroids(wordlist, word_centroid_map):
     # The number of clusters is equal to the highest cluster index
     # in the word / centroid map
-    num_centroids = max(word_centroid_map.values()) + 1
+    # num_centroids = max(word_centroid_map.values()) + 1
+    num_centroids = np.matrix(word_centroid_map.values()).max() + 1
+
+    # print num_centroids
+    # exit()
 
     # Pre-allocate the bag of centroids vector (for speed)
     bag_of_centroids = np.zeros(num_centroids, dtype="float32")
@@ -40,7 +44,10 @@ def create_bag_of_centroids(wordlist, word_centroid_map):
     for word in wordlist:
         if word in word_centroid_map:
             index = word_centroid_map[word]
-            bag_of_centroids[index] += 1
+            # print index
+            # exit()
+            for ix in index:
+                bag_of_centroids[ix] += 1
     #
     # Return the "bag of centroids"
     return bag_of_centroids
@@ -60,7 +67,8 @@ if __name__ == '__main__':
     #     print word_vectors[i]
     # exit(0)
     num_clusters = word_vectors.shape[1] / 5
-    # num_clusters = 10
+    num_clusters = 100
+    print num_clusters
 
     # Initalize a FCM object and use it to extract centroids
     print "Running FCM"
@@ -74,8 +82,12 @@ if __name__ == '__main__':
                                                       maxiter=1000,
                                                       init=None)
     idx = np.argmax(u, axis=0)  # Hardening for visualization
+    idx4five = np.argpartition(u, -4, 0)[-4:]
+    idx = idx4five
     # print len(idx), idx
+    # print u.shape, np.argwhere(u == np.amax(u)), idx4five.shape, idx4five[:, :2]
     # exit(0)
+
     # Get the end time and print how long the process took
     end = time.time()
     elapsed = end - start
@@ -84,28 +96,36 @@ if __name__ == '__main__':
 
     # Create a Word / Index dictionary, mapping each vocabulary word to
     # a cluster number
-    word_centroid_map = dict(zip(model.index2word, idx))
+    print len(model.index2word), idx.shape
 
+    # word_centroid_map = dict(zip(model.index2word, idx))
+    word_centroid_map = dict()
+    i = 0
+    for w in model.index2word:
+        # print w, idx.transpose()[i]
+        # exit()
+        word_centroid_map[w] = idx.transpose()[i]
+        i += 1
     # Print the first ten clusters
-    for cluster in xrange(0, 10):
-        # Print the cluster number
-        print "\nCluster %d" % cluster
-
-        # Find all of the words for that cluster number, and print them out
-        words = []
-        for i in xrange(0, len(word_centroid_map.values())):
-            # print word_centroid_map.values()[i]
-            # exit(0)
-            # print word_centroid_map.values()[i]
-            if (word_centroid_map.values()[i] == cluster):
-                # v = word_centroid_map.values()[i] == cluster
-                # print v
-                # # if v.any():
-                # exit(0)
-                # if(v.any()):
-                #     print v
-                words.append(word_centroid_map.keys()[i])
-        print words
+    # for cluster in xrange(0, 10):
+    #     # Print the cluster number
+    #     print "\nCluster %d" % cluster
+    #
+    #     # Find all of the words for that cluster number, and print them out
+    #     words = []
+    #     for i in xrange(0, len(word_centroid_map.values())):
+    #         # print word_centroid_map.values()[i]
+    #         # exit(0)
+    #         # print word_centroid_map.values()[i]
+    #         if (word_centroid_map.values()[i] == cluster):
+    #             # v = word_centroid_map.values()[i] == cluster
+    #             # print v
+    #             # # if v.any():
+    #             # exit(0)
+    #             # if(v.any()):
+    #             #     print v
+    #             words.append(word_centroid_map.keys()[i])
+    #     print words
 
 
     # Create clean_train_reviews and clean_test_reviews as we did before
