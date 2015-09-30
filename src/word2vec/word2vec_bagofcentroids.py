@@ -52,7 +52,7 @@ def create_bag_of_centroids( wordlist, word_centroid_map ):
 
 if __name__ == '__main__':
 
-    model = Word2Vec.load("300features_40minwords_10context")
+    model = Word2Vec.load("..\\..\\models\\300features_40minwords_10context")
 
 
     # ****** Run k-means on the word vectors and print a few clusters
@@ -105,11 +105,11 @@ if __name__ == '__main__':
     # Read data from files
     # train = pd.read_csv( os.path.join(os.path.dirname(__file__), 'data', 'labeledTrainData.tsv'), header=0, delimiter="\t", quoting=3 )
     # test = pd.read_csv(os.path.join(os.path.dirname(__file__), 'data', 'testData.tsv'), header=0, delimiter="\t", quoting=3 )
-    train = pd.read_csv('C:\\proj\\FSA-imp\\data\\parsed\\ttk_train.tsv',
+    train = pd.read_csv('..\\..\\data\\parsed\\ttk_train.tsv',
                         header=0,
                         delimiter="\t",
                         quoting=3)
-    test = pd.read_csv('C:\\proj\\FSA-imp\\data\\parsed\\ttk_test_etalon.tsv',
+    test = pd.read_csv('..\\..\\data\\parsed\\ttk_test_etalon.tsv',
                        header=0,
                        delimiter="\t",
                        quoting=3)
@@ -160,5 +160,5 @@ if __name__ == '__main__':
     output = pd.DataFrame(data={"target":test["sentiment"], "sentiment":result})
     print(classification_report(test["sentiment"], result))
 
-    output.to_csv("C:\\proj\\FSA-imp\\results\\BagOfCentroids.csv", index=False, quoting=3)
+    output.to_csv("..\\..\\results\\\BagOfCentroids.csv", index=False, quoting=3)
     print "Wrote BagOfCentroids.csv"

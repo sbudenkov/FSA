@@ -25,6 +25,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import skfuzzy as fuzz
 from gensim.models import Word2Vec
+from sklearn import decomposition
 
 colors = ['b', 'orange', 'g', 'r', 'c', 'm', 'y', 'k', 'Brown', 'ForestGreen']
 
@@ -44,13 +45,14 @@ xpts = np.empty(1)
 ypts = np.empty(1)
 labels = np.empty(1)
 for i, ((xmu, ymu), (xsigma, ysigma)) in enumerate(zip(centers, sigmas)):
-    xpts = np.hstack((xpts, np.random.standard_normal(20) * xsigma + xmu))
-    ypts = np.hstack((ypts, np.random.standard_normal(20) * ysigma + ymu))
-    labels = np.hstack((labels, np.ones(20) * i))
+    xpts = np.hstack((xpts, np.random.standard_normal(3) * xsigma + xmu))
+    ypts = np.hstack((ypts, np.random.standard_normal(3) * ysigma + ymu))
+    labels = np.hstack((labels, np.ones(3) * i))
 
 # Visualize the test data
 fig0, ax0 = plt.subplots()
 for label in range(3):
+    # print(xpts[labels == label], ypts[labels == label], label)
     ax0.plot(xpts[labels == label], ypts[labels == label], '.',
              color=colors[label])
 ax0.set_title('Test data: 200 points x3 clusters.')
@@ -70,15 +72,45 @@ Let's try clustering our data several times, with between 2 and 9 clusters.
 
 """
 # Set up the loop and plot
-fig1, axes1 = plt.subplots(6, 6, figsize=(8, 8))
-# alldata = np.vstack((xpts, ypts))
-model = Word2Vec.load("C:\\proj\\FSA-imp\\src\\word2vec\\300features_40minwords_10context")
+fig1, axes1 = plt.subplots(3, 3, figsize=(8, 8))
+alldata = np.vstack((xpts, ypts))
+model = Word2Vec.load("..\\models\\300features_40minwords_10context")
 alldata = model.syn0
+alldata = alldata.transpose()
+
+# For plotting
+figC, axC = plt.subplots()
+h = .02
+pca = decomposition.PCA(n_components=2)
+pca.fit(alldata)
+X = pca.transform(alldata)
+alldata = X
+# X = alldata[:, :2]
+# create a mesh to plot in
+x_min, x_max = X[:, 0].min() - 1, X[:, 0].max() + 1
+y_min, y_max = X[:, 1].min() - 1, X[:, 1].max() + 1
+xx, yy = np.meshgrid(np.arange(x_min, x_max, h),
+                     np.arange(y_min, y_max, h))
+# Plot also the training points
+axC.scatter(X[:, 0], X[:, 1])
+# axC.xlabel('Sepal length')
+# axC.ylabel('Sepal width')
+# figC.xlim(xx.min(), xx.max())
+# figC.ylim(yy.min(), yy.max())
+# axC.xticks(())
+# axC.yticks(())
+# plt.show()
+# exit()
+
+print (alldata.shape)
+# print (alldata[:1, :], alldata[:1, :].shape)
+# plt.show()
+# exit(0)
 fpcs = []
 for ncenters, ax in enumerate(axes1.reshape(-1), 2):
-    print (ncenters)
+    # print (ncenters)
     cntr, u, u0, d, jm, p, fpc = fuzz.cluster.cmeans(
-        alldata, ncenters, 2, error=0.005, maxiter=1000, init=None)
+        alldata, ncenters, 2, error=0.005, maxiter=10000, init=None)
 
     # Store fpc values for later
     fpcs.append(fpc)
@@ -86,20 +118,24 @@ for ncenters, ax in enumerate(axes1.reshape(-1), 2):
     # Plot assigned clusters, for each data point in training set
     cluster_membership = np.argmax(u, axis=0)
     # for j in range(ncenters):
-        # ax.plot(xpts[cluster_membership == j],
-        #         ypts[cluster_membership == j], '.', color=colors[j])
-        # ax.plot(xpts[cluster_membership == j],
-        #         ypts[cluster_membership == j], '.', color=colors[j])
+    #     ax.plot(X[:, 0][cluster_membership == j],
+    #             X[:, 1][cluster_membership == j], '.', color=colors[j])
+    #     ax.plot(X[:, 0][cluster_membership == j],
+    #             X[:, 1][cluster_membership == j], '.', color=colors[j])
 
     # Mark the center of each fuzzy cluster
     for pt in cntr:
         ax.plot(pt[0], pt[1], 'rs')
+    if ncenters == 5:
+        for pt in cntr:
+            axC.plot(pt[0], pt[1], 'rs')
 
     ax.set_title('Centers = {0}; FPC = {1:.2f}'.format(ncenters, fpc))
     ax.axis('off')
 
 fig1.tight_layout()
-
+# plt.show()
+# exit(0)
 """
 .. image:: PLOT2RST.current_figure
 
@@ -116,7 +152,7 @@ maximized, our data is described best.
 """
 
 fig2, ax2 = plt.subplots()
-ax2.plot(np.r_[2:38], fpcs)
+ax2.plot(np.r_[2:11], fpcs)
 ax2.set_xlabel("Number of centers")
 ax2.set_ylabel("Fuzzy partition coefficient")
 plt.show()

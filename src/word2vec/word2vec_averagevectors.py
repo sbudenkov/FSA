@@ -23,7 +23,6 @@ from gensim.models import Word2Vec
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import classification_report
 
-
 from KaggleWord2VecUtility import KaggleWord2VecUtility, FuzzyWord2VecUtility
 
 
@@ -71,16 +70,16 @@ def getAvgFeatureVecs(reviews, model, num_features):
     #
     # Loop through the reviews
     for review in reviews:
-       #
-       # Print a status message every 1000th review
-       if counter%1000. == 0.:
-           print "Review %d of %d" % (counter, len(reviews))
-       #
-       # Call the function (defined above) that makes average feature vectors
-       reviewFeatureVecs[counter] = makeFeatureVec(review, model, num_features)
-       #
-       # Increment the counter
-       counter = counter + 1.
+        #
+        # Print a status message every 1000th review
+        if counter % 1000. == 0.:
+            print "Review %d of %d" % (counter, len(reviews))
+        #
+        # Call the function (defined above) that makes average feature vectors
+        reviewFeatureVecs[counter] = makeFeatureVec(review, model, num_features)
+        #
+        # Increment the counter
+        counter = counter + 1.
     return reviewFeatureVecs
 
 
@@ -91,27 +90,28 @@ def getCleanReviews(reviews):
         clean_reviews.append(FuzzyWord2VecUtility.text_to_wordlist(review, remove_stopwords=True))
     return clean_reviews
 
+
 if __name__ == '__main__':
     # Read data from files
     # train = pd.read_csv( os.path.join(os.path.dirname(__file__), 'data', 'labeledTrainData.tsv'), header=0, delimiter="\t", quoting=3 )
     # test = pd.read_csv(os.path.join(os.path.dirname(__file__), 'data', 'testData.tsv'), header=0, delimiter="\t", quoting=3 )
     # unlabeled_train = pd.read_csv( os.path.join(os.path.dirname(__file__), 'data', "unlabeledTrainData.tsv"), header=0,  delimiter="\t", quoting=3 )
-    train = pd.read_csv('C:\\proj\\FSA-imp\\data\\parsed\\ttk_train.tsv',
+    train = pd.read_csv('..\\..\\data\\parsed\\ttk_train.tsv',
                         header=0,
                         delimiter="\t",
                         quoting=3)
-    test = pd.read_csv('C:\\proj\\FSA-imp\\data\\parsed\\ttk_test_etalon.tsv',
+    test = pd.read_csv('..\\..\\data\\parsed\\ttk_test_etalon.tsv',
                        header=0,
                        delimiter="\t",
                        quoting=3)
-    unlabeled_train = pd.read_csv('C:\\proj\\FSA-imp\\data\\parsed\\ttk_test.tsv',
-                       header=0,
-                       delimiter="\t",
-                       quoting=3)
+    unlabeled_train = pd.read_csv('..\\..\\data\\parsed\\ttk_test.tsv',
+                                  header=0,
+                                  delimiter="\t",
+                                  quoting=3)
     # Verify the number of reviews that were read (100,000 in total)
     print "Read %d labeled train reviews, %d labeled test reviews, " \
-     "and %d unlabeled reviews\n" % (train["text"].size,
-     test["text"].size, unlabeled_train["text"].size )
+          "and %d unlabeled reviews\n" % (train["text"].size,
+                                          test["text"].size, unlabeled_train["text"].size)
 
 
 
@@ -141,21 +141,21 @@ if __name__ == '__main__':
     #
     # Import the built-in logging module and configure it so that Word2Vec
     # creates nice output messages
-    logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s',\
-        level=logging.INFO)
+    logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', \
+                        level=logging.INFO)
 
     # Set values for various parameters
-    num_features = 300    # Word vector dimensionality
-    min_word_count = 40    # Minimum word count 40
-    num_workers = 4       # Number of threads to run in parallel
-    context = 10          # Context window size 10
-    downsampling = 1e-3   # Downsample setting for frequent words
+    num_features = 300      # Word vector dimensionality
+    min_word_count = 40     # Minimum word count 40
+    num_workers = 4         # Number of threads to run in parallel
+    context = 10            # Context window size 10
+    downsampling = 1e-3     # Downsample setting for frequent words
 
     # Initialize and train the model (this will take some time)
     print "Training Word2Vec model..."
     model = Word2Vec(sentences, workers=num_workers,
-                    size = num_features, min_count = min_word_count,
-                    window = context, sample = downsampling, seed=1)
+                     size=num_features, min_count=min_word_count,
+                     window=context, sample=downsampling, seed=1)
 
     # If you don't plan to train the model any further, calling
     # init_sims will make the model much more memory-efficient.
@@ -163,7 +163,7 @@ if __name__ == '__main__':
 
     # It can be helpful to create a meaningful model name and
     # save the model for later use. You can load it later using Word2Vec.load()
-    model_name = "300features_40minwords_10context"
+    model_name = "..\\..\\models\\300features_40minwords_10context"
     model.save(model_name)
 
     # model.doesnt_match(u"мтс билайн рыба".split())
@@ -184,22 +184,22 @@ if __name__ == '__main__':
     #
     print "Creating average feature vecs for training reviews"
 
-    trainDataVecs = getAvgFeatureVecs( getCleanReviews(train), model, num_features )
+    trainDataVecs = getAvgFeatureVecs(getCleanReviews(train), model, num_features)
 
     print "Creating average feature vecs for test reviews"
 
-    testDataVecs = getAvgFeatureVecs( getCleanReviews(test), model, num_features )
+    testDataVecs = getAvgFeatureVecs(getCleanReviews(test), model, num_features)
 
 
     # ****** Fit a random forest to the training set, then make predictions
     #
     # Fit a random forest to the training data, using 100 trees
-    forest = RandomForestClassifier(n_estimators = 100)
+    forest = RandomForestClassifier(n_estimators=100)
 
     print "Fitting a random forest to labeled training data..."
     # print(trainDataVecs.shape)
-    np.savetxt('train.out', trainDataVecs, delimiter='\t')
-    np.savetxt('test.out', testDataVecs, delimiter='\t')
+    # np.savetxt('train.out', trainDataVecs, delimiter='\t')
+    # np.savetxt('test.out', testDataVecs, delimiter='\t')
     # with open("trainDataVecs.txt", "wb") as result_out:
     # # i = 0
     # # for s in prediction_linear:
@@ -208,14 +208,14 @@ if __name__ == '__main__':
     # #     i += 1
     #     result_out.write(trainDataVecs)
     # exit(0)
-    forest = forest.fit( trainDataVecs, train["sentiment"] )
+    forest = forest.fit(trainDataVecs, train["sentiment"])
 
     # Test & extract results
-    result = forest.predict( testDataVecs )
+    result = forest.predict(testDataVecs)
 
     # Write the test results
-    output = pd.DataFrame( data={"target":test["sentiment"], "sentiment":result} )
+    output = pd.DataFrame(data={"target": test["sentiment"], "sentiment": result})
     print(classification_report(test["sentiment"], result))
 
-    output.to_csv( "C:\\proj\\FSA-imp\\results\\Word2Vec_AverageVectors.csv", index=False, quoting=3 )
+    output.to_csv("..\\..\\results\\Word2Vec_AverageVectors.csv", index=False, quoting=3)
     print "Wrote Word2Vec_AverageVectors.csv"
