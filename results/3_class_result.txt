@@ -1,0 +1,73 @@
+C:\Users\Semen\Anaconda\python.exe C:/Users/Semen/PycharmProjects/FSA/main.py
+Menu:
+1. Convert data from xml to tsv/csv
+2. Train model
+3. Test model
+4. Exit
+Select action: 2
+Run:
+1. pre + train
+2. train
+Select process: 2
+Input data:
+1. ttk
+2. bank
+Select data: 1
+Train model ...
+Tokenizing process during: 3.75100016594sec
+Train data shape after TF-IDF:  (4799, 4592)
+Test data shape after TF-IDF:  (3845, 4592)
+Results for NB
+Training time: 0.009000s; Prediction time: 0.002000s
+             precision    recall  f1-score   support
+
+         -1       0.47      0.79      0.59       879
+          0       0.85      0.74      0.79      2595
+          1       0.35      0.08      0.13       371
+
+avg / total       0.71      0.69      0.68      3845
+
+Results for SGD
+Training time: 0.032000s; Prediction time: 0.003000s
+             precision    recall  f1-score   support
+
+         -1       0.48      0.79      0.59       879
+          0       0.85      0.72      0.78      2595
+          1       0.39      0.20      0.27       371
+
+avg / total       0.72      0.69      0.69      3845
+
+Results for SVC(kernel=rbf)
+Training time: 10.643000s; Prediction time: 6.429000s
+             precision    recall  f1-score   support
+
+         -1       0.00      0.00      0.00       879
+          0       0.67      1.00      0.81      2595
+          1       0.00      0.00      0.00       371
+
+avg / total       0.46      0.67      0.54      3845
+
+Results for SVC(kernel=linear)
+Training time: 8.185000s; Prediction time: 3.978000s
+C:\Users\Semen\Anaconda\lib\site-packages\sklearn\metrics\metrics.py:1771: UndefinedMetricWarning: Precision and F-score are ill-defined and being set to 0.0 in labels with no predicted samples.
+  'precision', 'predicted', average, warn_for)
+             precision    recall  f1-score   support
+
+         -1       0.52      0.73      0.61       879
+          0       0.85      0.73      0.79      2595
+          1       0.35      0.36      0.36       371
+
+avg / total       0.73      0.70      0.71      3845
+
+Results for LinearSVC()
+Training time: 0.175000s; Prediction time: 0.002000s
+             precision    recall  f1-score   support
+
+         -1       0.51      0.70      0.59       879
+          0       0.85      0.69      0.77      2595
+          1       0.28      0.40      0.33       371
+
+avg / total       0.72      0.67      0.68      3845
+
+
+Process finished with exit code 0

@@ -19,6 +19,12 @@ if __name__ == '__main__':
     #     sys.exit(1)
 
     # Hardcoded input files
+    # file_train_bank         = ".\\data\\SentiRuEval_twitter\\bank_train.xml"
+    # file_test_bank          = ".\\data\\SentiRuEval_twitter\\bank_test.xml"
+    # file_train_ttk          = ".\\data\\SentiRuEval_twitter\\ttk_train.xml"
+    # file_test_ttk           = ".\\data\\SentiRuEval_twitter\\ttk_test.xml"
+    # file_test_ttk_etalon    = ".\\data\\SentiRuEval_twitter\\eval\\ttk_test_etalon.xml"
+    # file_test_bank_etalon   = ".\\data\\SentiRuEval_twitter\\eval\\bank_test_etalon.xml"
     file_train_bank         = ".\\data\\SentiRuEval_twitter\\bank_train.xml"
     file_test_bank          = ".\\data\\SentiRuEval_twitter\\bank_test.xml"
     file_train_ttk          = ".\\data\\SentiRuEval_twitter\\ttk_train.xml"
@@ -158,8 +164,8 @@ if __name__ == '__main__':
         print "Successfully converted"
 
     # Categories for training and predictions
-    categories = ['positive', 'negative']
-    # categories = ['positive', 'negative', 'neutral']
+    # categories = ['positive', 'negative']
+    categories = ['positive', 'negative', 'neutral']
 
     # Load train data and train model
     if (mode == 2):
@@ -173,11 +179,11 @@ if __name__ == '__main__':
         train_data = int(raw_input("Select data: "))
 
         if (train_data == 1):
-            train_file = "./data/parsed/ttk_train.tsv"
-            test_file  = "./data/parsed/ttk_test_etalon.tsv"
+            train_file = ".\\data\\parsed\\ttk_train.tsv"
+            test_file  = ".\\data\\parsed\\ttk_test_etalon.tsv"
         elif (train_data == 2):
-            train_file = "./data/parsed/bank_train.tsv"
-            test_file  = "./data/parsed/bank_test_etalon.tsv"
+            train_file = ".\\data\\parsed\\bank_train.tsv"
+            test_file  = ".\\data\\parsed\\bank_test_etalon.tsv"
         else:
             exit()
 
