@@ -16,7 +16,8 @@ from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.naive_bayes import             MultinomialNB
 from sklearn.svm import                     SVC, LinearSVC
-from sklearn.linear_model import            SGDClassifier
+from sklearn.linear_model import            SGDClassifier, PassiveAggressiveClassifier, Perceptron
+from sklearn.ensemble import                RandomForestClassifier
 from sklearn.metrics import                 classification_report
 
 from stemming import Porter
@@ -182,6 +183,16 @@ def train(train_in, test_in, categories):
     time_liblinear_train = t1 - t0
     time_liblinear_predict = t2 - t1
 
+    # Perform classification with Random Forest
+    classifier_forest = RandomForestClassifier(n_estimators=100)
+    t0 = time.time()
+    classifier_forest.fit(train_vectors.todense(), train_labels)
+    t1 = time.time()
+    prediction_forest = classifier_forest.predict(test_vectors.todense())
+    t2 = time.time()
+    time_forest_train = t1 - t0
+    time_forest_predict = t2 - t1
+
     # Print results in a nice table
     print("Results for NB")
     print("Training time: %fs; Prediction time: %fs" % (time_nb_train, time_nb_predict))
@@ -221,3 +232,6 @@ def train(train_in, test_in, categories):
     #             result_out.write(
     #                 test_labels[i] + " : " + prediction_liblinear[i] + '\t' + test_data[i].encode("utf-8") + '\n')
     #         i += 1
+    print("Results for RandomForestClassifier()")
+    print("Training time: %fs; Prediction time: %fs" % (time_forest_train, time_forest_predict))
+    print(classification_report(test_labels, prediction_forest))

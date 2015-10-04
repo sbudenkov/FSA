@@ -1,4 +1,11 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
+# *************************************** #
+#
+#  Author:  Semen Budenkov
+#  Date:    01/10/2015
+#
+# *************************************** #
 
 import csv
 import json

@@ -1,4 +1,11 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
+# *************************************** #
+#
+#  Author:  Semen Budenkov
+#  Date:    01/10/2015
+#
+# *************************************** #
 
 import sys
 import os
@@ -164,8 +171,8 @@ if __name__ == '__main__':
         print "Successfully converted"
 
     # Categories for training and predictions
-    # categories = ['positive', 'negative']
-    categories = ['positive', 'negative', 'neutral']
+    categories = ['positive', 'negative']
+    # categories = ['positive', 'negative', 'neutral']
 
     # Load train data and train model
     if (mode == 2):

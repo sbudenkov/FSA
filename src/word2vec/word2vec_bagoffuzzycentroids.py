@@ -174,7 +174,6 @@ if __name__ == '__main__':
 
 
     # ****** Fit a random forest and extract predictions
-    #
     forest = RandomForestClassifier(n_estimators=100)
 
     # Fitting the forest may take a few minutes
