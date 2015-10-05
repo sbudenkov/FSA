@@ -5,6 +5,10 @@ Menu:
 3. Test model
 4. Exit
 Select action: 2
+Categories:
+1. Positive, negative
+2. Positive, neutral, negative
+Select categories for training and predictions: 1
 Run:
 1. pre + train
 2. train
@@ -13,12 +17,12 @@ Input data:
 1. ttk
 2. bank
 Select data: 1
-Train model ...
-Tokenizing process during: 1.78299999237sec
+Train model for categories:  ['positive', 'negative']
+Tokenizing process during: 1.85899996758sec
 Train data shape after TF-IDF:  (2541, 2846)
 Test data shape after TF-IDF:  (1250, 2846)
 Results for NB
-Training time: 0.006000s; Prediction time: 0.001000s
+Training time: 0.047000s; Prediction time: 0.002000s
              precision    recall  f1-score   support
 
          -1       0.77      0.99      0.86       879
@@ -26,8 +30,22 @@ Training time: 0.006000s; Prediction time: 0.001000s
 
 avg / total       0.81      0.78      0.74      1250
 
+real: 1  predicted: -1  @wylsacom запуск 4 g от билайн ознаменовался одним хорошим событием lte работает на iphone 5 s a1533 тот который американский даешь д
+
+real: 1  predicted: -1  воу воу не ожидал от #beeline http://t.co/cu3k94d6l0
+
+real: 1  predicted: -1  @wylsacom но в силу поддержки разных частот работать американские iphone 5 s 5 c будут только в мтс билайн
+
+real: 1  predicted: -1  « билайн » первым запустил мобильную связь в 150 поселках якутии #компьютер #новости
+
+real: 1  predicted: -1  @maksimko009sifu iphone 5 s будет работать в lte сети билайна
+
+real: 1  predicted: -1  @plushev на триумфальной lte билайна очень неплох http://t.co/ucyrjylwcb
+
+real: 1  predicted: -1  сотовая компания билайн запустила lte сети в диапазоне band 20 работают даже американские модели iphone 5 s и 5 c а они значительно дешевле
+
 Results for SGD
-Training time: 0.175000s; Prediction time: 0.001000s
+Training time: 0.084000s; Prediction time: 0.000000s
              precision    recall  f1-score   support
 
          -1       0.80      0.96      0.87       879
@@ -35,8 +53,22 @@ Training time: 0.175000s; Prediction time: 0.001000s
 
 avg / total       0.80      0.80      0.78      1250
 
+real: 1  predicted: -1  воу воу не ожидал от #beeline http://t.co/cu3k94d6l0
+
+real: 1  predicted: -1  @wylsacom но в силу поддержки разных частот работать американские iphone 5 s 5 c будут только в мтс билайн
+
+real: -1   predicted: 1 ёбаный билайн
+
+real: 1  predicted: -1  @maksimko009sifu iphone 5 s будет работать в lte сети билайна
+
+real: -1   predicted: 1 http://t.co/szt96iltms билайн отключить услугу домашний регион
+
+real: 1  predicted: -1  но в силу поддержки разных частот работать американские iphone 5 s 5 c будут только в мтс билайн
+
+real: -1   predicted: 1 новая акция от билайн – подключись к мтс и мы сломаем тебе ноги #follow
+
 Results for SVC(kernel=rbf)
-Training time: 2.236000s; Prediction time: 0.947000s
+Training time: 2.298000s; Prediction time: 0.915000s
 C:\Users\Semen\Anaconda\lib\site-packages\sklearn\metrics\metrics.py:1771: UndefinedMetricWarning: Precision and F-score are ill-defined and being set to 0.0 in labels with no predicted samples.
   'precision', 'predicted', average, warn_for)
              precision    recall  f1-score   support
@@ -46,8 +78,22 @@ C:\Users\Semen\Anaconda\lib\site-packages\sklearn\metrics\metrics.py:1771: Undef
 
 avg / total       0.49      0.70      0.58      1250
 
+real: 1  predicted: -1  @yablochno_com iphone 5 s и 5 c заработали в lte сетях « билайна » у фас могут возникнуть вопросы http://t.co/cydufdhtmu
+
+real: 1  predicted: -1  @hapkotnkn « билайн » включил lte для владельцев новых iphone и ipad
+
+real: 1  predicted: -1  ура теперь заработает #lte #4g #beeline #nanosim #iphone на скорости #256кбит http://t.co/azvnchjxhu
+
+real: 1  predicted: -1  @wylsacom запуск 4 g от билайн ознаменовался одним хорошим событием lte работает на iphone 5 s a1533 тот который американский даешь д
+
+real: 1  predicted: -1  воу воу не ожидал от #beeline http://t.co/cu3k94d6l0
+
+real: 1  predicted: -1  @wylsacom но в силу поддержки разных частот работать американские iphone 5 s 5 c будут только в мтс билайн
+
+real: 1  predicted: -1  « билайн » первым запустил мобильную связь в 150 поселках якутии #компьютер #новости
+
 Results for SVC(kernel=linear)
-Training time: 1.749000s; Prediction time: 0.578000s
+Training time: 1.768000s; Prediction time: 0.578000s
              precision    recall  f1-score   support
 
          -1       0.82      0.91      0.86       879
@@ -55,14 +101,65 @@ Training time: 1.749000s; Prediction time: 0.578000s
 
 avg / total       0.79      0.80      0.79      1250
 
+real: -1   predicted: 1 @vestihitech лайфхак от билайн как заработать на собственных косяках @spotresov ай маладца пожалуй воздержусь от комментов http
+
+real: 1  predicted: -1  воу воу не ожидал от #beeline http://t.co/cu3k94d6l0
+
+real: 1  predicted: -1  @wylsacom но в силу поддержки разных частот работать американские iphone 5 s 5 c будут только в мтс билайн
+
+real: -1   predicted: 1 ёбаный билайн
+
+real: 1  predicted: -1  @maksimko009sifu iphone 5 s будет работать в lte сети билайна
+
+real: -1   predicted: 1 дорогой и светлый любящему сердцу билайн с неизменным ускорением катится в гавно два часа назад запросил кредит тишина
+
+real: -1   predicted: 1 http://t.co/szt96iltms билайн отключить услугу домашний регион
+
 Results for LinearSVC()
-Training time: 0.042000s; Prediction time: 0.000000s
+Training time: 0.053000s; Prediction time: 0.001000s
              precision    recall  f1-score   support
 
          -1       0.84      0.88      0.86       879
           1       0.68      0.61      0.64       371
 
 avg / total       0.79      0.80      0.80      1250
+
+real: -1   predicted: 1 @vestihitech лайфхак от билайн как заработать на собственных косяках @spotresov ай маладца пожалуй воздержусь от комментов http
+
+real: 1  predicted: -1  воу воу не ожидал от #beeline http://t.co/cu3k94d6l0
+
+real: 1  predicted: -1  @wylsacom но в силу поддержки разных частот работать американские iphone 5 s 5 c будут только в мтс билайн
+
+real: -1   predicted: 1 ёбаный билайн
+
+real: -1   predicted: 1 http://t.co/szt96iltms билайн отключить услугу домашний регион
+
+real: 1  predicted: -1  но в силу поддержки разных частот работать американские iphone 5 s 5 c будут только в мтс билайн
+
+real: -1   predicted: 1 новая акция от билайн – подключись к мтс и мы сломаем тебе ноги #follow
+
+Results for RandomForestClassifier()
+Training time: 32.877000s; Prediction time: 0.303000s
+             precision    recall  f1-score   support
+
+         -1       0.80      0.94      0.86       879
+          1       0.74      0.43      0.55       371
+
+avg / total       0.78      0.79      0.77      1250
+
+real :-1   predicted: 1 @vestihitech лайфхак от билайн как заработать на собственных косяках @spotresov ай маладца пожалуй воздержусь от комментов http
+
+real :1  predicted: -1  воу воу не ожидал от #beeline http://t.co/cu3k94d6l0
+
+real :1  predicted: -1  @wylsacom но в силу поддержки разных частот работать американские iphone 5 s 5 c будут только в мтс билайн
+
+real :-1   predicted: 1 фас может оштрафовать « вымпелком » и apple из за lte #news
+
+real :-1   predicted: 1 @joduzamibyh фас может оштрафовать « вымпелком » и apple из за lte #news
+
+real :-1   predicted: 1 дорогой и светлый любящему сердцу билайн с неизменным ускорением катится в гавно два часа назад запросил кредит тишина
+
+real :-1   predicted: 1 билайн оборудование для домашнего интернета из дешевого китайского дерьма живущего своей жизнью
 
 
 Process finished with exit code 0

@@ -8,22 +8,22 @@
 # *************************************** #
 
 # Load a pre-trained model
-import  os
-import  time
-import  re
+import os
+import time
+import re
 
-import  skfuzzy as fuzz
-import  pandas as pd
-import  numpy as np
+import skfuzzy  as fuzz
+import pandas   as pd
+import numpy    as np
 
-from    gensim.models import Word2Vec
-from    nltk.corpus import stopwords
-from    sklearn.cluster import KMeans
-from    sklearn.metrics import classification_report
-from    sklearn.ensemble import RandomForestClassifier
-from    bs4 import BeautifulSoup
+from gensim.models          import Word2Vec
+from nltk.corpus import     stopwords
+from sklearn.cluster        import KMeans
+from sklearn.metrics        import classification_report
+from sklearn.ensemble       import RandomForestClassifier
+from bs4                    import BeautifulSoup
 
-from    KaggleWord2VecUtility import KaggleWord2VecUtility, FuzzyWord2VecUtility
+from KaggleWord2VecUtility import KaggleWord2VecUtility, FuzzyWord2VecUtility
 
 # Create bags of centroids
 def create_bag_of_centroids(wordlist, word_centroid_map):
@@ -93,7 +93,6 @@ if __name__ == '__main__':
     elapsed = end - start
     print "Time taken for C Means clustering: ", elapsed, "seconds."
 
-
     # Create a Word / Index dictionary, mapping each vocabulary word to
     # a cluster number
     print len(model.index2word), idx.shape
@@ -153,7 +152,6 @@ if __name__ == '__main__':
         # clean_test_reviews.append( KaggleWord2VecUtility.review_to_wordlist( review, remove_stopwords=True ))
         clean_test_reviews.append(FuzzyWord2VecUtility.text_to_wordlist(review, remove_stopwords=True))
 
-
     # Create bags of centroids
     # Pre-allocate an array for the training set bags of centroids (for speed)
     train_centroids = np.zeros((train["text"].size, num_clusters), dtype="float32")
@@ -171,7 +169,6 @@ if __name__ == '__main__':
     for review in clean_test_reviews:
         test_centroids[counter] = create_bag_of_centroids(review, word_centroid_map)
         counter += 1
-
 
     # ****** Fit a random forest and extract predictions
     forest = RandomForestClassifier(n_estimators=100)

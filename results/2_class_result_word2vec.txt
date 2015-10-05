@@ -1,0 +1,175 @@
+C:\Users\Semen\Anaconda\python.exe C:/Users/Semen/PycharmProjects/FSA/main.py
+Menu:
+1. Convert data from xml to tsv/csv
+2. Train model
+3. Test model
+4. Exit
+Select action: 2
+Categories:
+1. Positive, negative
+2. Positive, neutral, negative
+Select categories for training and predictions: 1
+Run:
+1. pre + train
+2. train
+Select process: 2
+Input data:
+1. ttk
+2. bank
+Select data: 1
+Train model for categories:  ['positive', 'negative']
+Tokenizing process during: 1.92000007629sec
+Models:
+1. BoW
+2. TF/IDF
+3. BoW TF/IDF
+4. word2vec
+5. word2vec k-means
+6. word2vec FCM
+Select model for training and predictions: 6
+word2vec FCM
+('Selected ', 100, ' clusters')
+Running FCM
+Word vector length:  (300L, 429L)
+FCM clustering during:  7.90199995041  sec
+429 (4L, 429L)
+Results for NB
+Training time: 0.018000s; Prediction time: 0.003000s
+             precision    recall  f1-score   support
+
+         -1       0.73      0.84      0.78       879
+          1       0.41      0.26      0.32       371
+
+avg / total       0.64      0.67      0.65      1250
+
+real: 1	 predicted: -1	ура теперь заработает #lte #4g #beeline #nanosim #iphone на скорости #256кбит http://t.co/azvnchjxhu
+
+real: 1	 predicted: -1	@wylsacom запуск 4 g от билайн ознаменовался одним хорошим событием lte работает на iphone 5 s a1533 тот который американский даешь д
+
+real: 1	 predicted: -1	воу воу не ожидал от #beeline http://t.co/cu3k94d6l0
+
+real: 1	 predicted: -1	@wylsacom но в силу поддержки разных частот работать американские iphone 5 s 5 c будут только в мтс билайн
+
+real: 1	 predicted: -1	lte билайна заработал на iphone 5 s 5 c
+
+real: -1	 predicted: 1	@sadieocasey фас может оштрафовать вымпелком и apple из за lte смартфоны iphone 5 c и 5 s первыми из « яблочных » устройств по http://t
+
+real: 1	 predicted: -1	все таки постепенно контракты у мобильных операторов приходят в рф вот билайн предлагает iphone 5 s за 25 к с контрактом на год интернета
+
+Results for SGD
+Training time: 0.024000s; Prediction time: 0.002000s
+             precision    recall  f1-score   support
+
+         -1       0.64      0.04      0.07       879
+          1       0.29      0.95      0.45       371
+
+avg / total       0.54      0.31      0.18      1250
+
+real: -1	 predicted: 1	что то я ни хрена с этим пчелайном не доганяю
+
+real: 1	 predicted: -1	lte билайна заработал на iphone 5 s 5 c
+
+real: -1	 predicted: 1	@sadieocasey фас может оштрафовать вымпелком и apple из за lte смартфоны iphone 5 c и 5 s первыми из « яблочных » устройств по http://t
+
+real: -1	 predicted: 1	придётся сегодня опять идти разбираться в офис билайна
+
+real: -1	 predicted: 1	фас может оштрафовать « вымпелком » и apple из за lte #news
+
+real: -1	 predicted: 1	@joduzamibyh фас может оштрафовать « вымпелком » и apple из за lte #news
+
+real: -1	 predicted: 1	дорогой и светлый любящему сердцу билайн с неизменным ускорением катится в гавно два часа назад запросил кредит тишина
+
+Results for SVC(kernel=rbf)
+Training time: 4.026000s; Prediction time: 1.287000s
+             precision    recall  f1-score   support
+
+         -1       0.73      0.94      0.82       879
+          1       0.53      0.17      0.25       371
+
+avg / total       0.67      0.71      0.65      1250
+
+real: 1	 predicted: -1	@yablochno_com iphone 5 s и 5 c заработали в lte сетях « билайна » у фас могут возникнуть вопросы http://t.co/cydufdhtmu
+
+real: 1	 predicted: -1	@hapkotnkn « билайн » включил lte для владельцев новых iphone и ipad
+
+real: 1	 predicted: -1	ура теперь заработает #lte #4g #beeline #nanosim #iphone на скорости #256кбит http://t.co/azvnchjxhu
+
+real: 1	 predicted: -1	@wylsacom запуск 4 g от билайн ознаменовался одним хорошим событием lte работает на iphone 5 s a1533 тот который американский даешь д
+
+real: 1	 predicted: -1	воу воу не ожидал от #beeline http://t.co/cu3k94d6l0
+
+real: 1	 predicted: -1	@wylsacom но в силу поддержки разных частот работать американские iphone 5 s 5 c будут только в мтс билайн
+
+real: 1	 predicted: -1	« билайн » первым запустил мобильную связь в 150 поселках якутии #компьютер #новости
+
+Results for SVC(kernel=linear)
+Training time: 15.961000s; Prediction time: 0.825000s
+             precision    recall  f1-score   support
+
+         -1       0.71      0.99      0.83       879
+          1       0.68      0.05      0.10       371
+
+avg / total       0.70      0.71      0.61      1250
+
+real: 1	 predicted: -1	@yablochno_com iphone 5 s и 5 c заработали в lte сетях « билайна » у фас могут возникнуть вопросы http://t.co/cydufdhtmu
+
+real: 1	 predicted: -1	@hapkotnkn « билайн » включил lte для владельцев новых iphone и ipad
+
+real: 1	 predicted: -1	ура теперь заработает #lte #4g #beeline #nanosim #iphone на скорости #256кбит http://t.co/azvnchjxhu
+
+real: 1	 predicted: -1	@wylsacom запуск 4 g от билайн ознаменовался одним хорошим событием lte работает на iphone 5 s a1533 тот который американский даешь д
+
+real: 1	 predicted: -1	воу воу не ожидал от #beeline http://t.co/cu3k94d6l0
+
+real: 1	 predicted: -1	@wylsacom но в силу поддержки разных частот работать американские iphone 5 s 5 c будут только в мтс билайн
+
+real: 1	 predicted: -1	« билайн » первым запустил мобильную связь в 150 поселках якутии #компьютер #новости
+
+Results for LinearSVC()
+Training time: 1.562000s; Prediction time: 0.003000s
+             precision    recall  f1-score   support
+
+         -1       0.70      0.89      0.78       879
+          1       0.29      0.11      0.16       371
+
+avg / total       0.58      0.66      0.60      1250
+
+real: 1	 predicted: -1	@yablochno_com iphone 5 s и 5 c заработали в lte сетях « билайна » у фас могут возникнуть вопросы http://t.co/cydufdhtmu
+
+real: 1	 predicted: -1	@hapkotnkn « билайн » включил lte для владельцев новых iphone и ipad
+
+real: 1	 predicted: -1	ура теперь заработает #lte #4g #beeline #nanosim #iphone на скорости #256кбит http://t.co/azvnchjxhu
+
+real: 1	 predicted: -1	@wylsacom запуск 4 g от билайн ознаменовался одним хорошим событием lte работает на iphone 5 s a1533 тот который американский даешь д
+
+real: 1	 predicted: -1	воу воу не ожидал от #beeline http://t.co/cu3k94d6l0
+
+real: 1	 predicted: -1	@wylsacom но в силу поддержки разных частот работать американские iphone 5 s 5 c будут только в мтс билайн
+
+real: 1	 predicted: -1	« билайн » первым запустил мобильную связь в 150 поселках якутии #компьютер #новости
+
+Results for RandomForestClassifier()
+Training time: 5.784000s; Prediction time: 0.094000s
+             precision    recall  f1-score   support
+
+         -1       0.73      0.91      0.81       879
+          1       0.49      0.20      0.29       371
+
+avg / total       0.66      0.70      0.66      1250
+
+real :1	 predicted: -1	@yablochno_com iphone 5 s и 5 c заработали в lte сетях « билайна » у фас могут возникнуть вопросы http://t.co/cydufdhtmu
+
+real :1	 predicted: -1	ура теперь заработает #lte #4g #beeline #nanosim #iphone на скорости #256кбит http://t.co/azvnchjxhu
+
+real :1	 predicted: -1	@wylsacom запуск 4 g от билайн ознаменовался одним хорошим событием lte работает на iphone 5 s a1533 тот который американский даешь д
+
+real :1	 predicted: -1	воу воу не ожидал от #beeline http://t.co/cu3k94d6l0
+
+real :1	 predicted: -1	@wylsacom но в силу поддержки разных частот работать американские iphone 5 s 5 c будут только в мтс билайн
+
+real :1	 predicted: -1	« билайн » первым запустил мобильную связь в 150 поселках якутии #компьютер #новости
+
+real :1	 predicted: -1	lte билайна заработал на iphone 5 s 5 c
+
+
+Process finished with exit code 0
