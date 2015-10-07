@@ -39,6 +39,8 @@ def create_bag_of_fuzzy_centroids(wordlist, word_centroid_map):
 
 def softVectorizer(train_data, test_data):
     model = Word2Vec.load(".\\models\\300features_40minwords_10context")
+    # model = Word2Vec.load(".\\models\\ruscorpora.model.bin")
+    # model = Word2Vec.load_word2vec_format('/tmp/vectors.bin.gz', binary=True)
 
     # Run FCM on the word vectors and print a few clusters
     start = time.time()  # Start time

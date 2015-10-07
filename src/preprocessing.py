@@ -12,6 +12,7 @@ import os
 import re
 import string
 import xmltodict
+from pymystem3 import Mystem
 
 from stemming import Porter
 # from nltk.corpus import stopwords
@@ -38,14 +39,27 @@ regex_str = [
 
 tokens_re = re.compile(r'(' + '|'.join(regex_str) + ')', re.VERBOSE | re.IGNORECASE)
 emoticon_re = re.compile(r'^' + emoticons_str + '$', re.VERBOSE | re.IGNORECASE)
-
+m = Mystem()
+prep_counter = 0
 
 def tokenize(s):
     return tokens_re.findall(s)
 
 
 def preprocess(s, lowercase=False, stemming=False):
-    tokens = tokenize(s)
+    # tokens = tokenize(s)
+    global m
+    global prep_counter
+    tokens = m.lemmatize(s)
+
+    # Print a status message every 1000th review
+    if prep_counter % 100. == 0.:
+        print "Lemmatize %d twits" % (prep_counter)
+
+    prep_counter += 1
+    # for t in tokens:
+    #     print t
+    # exit(0)
     if lowercase:
         tokens = [token if emoticon_re.search(token) else token.lower() for token in tokens]
     if True:
