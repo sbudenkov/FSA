@@ -10,19 +10,18 @@
 import time
 import string
 import cPickle as pickle
-from pandas import DataFrame
 
-from sklearn.feature_extraction.text    import CountVectorizer
 from sklearn.feature_extraction.text    import TfidfVectorizer
 from sklearn.naive_bayes                import MultinomialNB
 from sklearn.svm                        import SVC, LinearSVC
-from sklearn.linear_model               import SGDClassifier, PassiveAggressiveClassifier, Perceptron
+from sklearn.linear_model               import SGDClassifier
 from sklearn.ensemble                   import RandomForestClassifier
 from sklearn.metrics                    import classification_report
 
 from stemming       import Porter
 from preprocessing  import preprocess
-from word2vec       import softVectorizer
+# from word2vec import softVectorizer
+
 # from factory import create_factory, train_factory, test_factory
 
 
@@ -55,6 +54,8 @@ def prepare_data(f, categories, lowercase=True, stemming=False):
                 labels.append(1)
 
     return data, labels
+
+
 
 
 # Train model with pipeline and grid

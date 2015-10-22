@@ -11,10 +11,13 @@ import csv
 import os
 import re
 import string
+import time
+
 import xmltodict
 from pymystem3 import Mystem
 
 from stemming import Porter
+
 # from nltk.corpus import stopwords
 
 emoticons_str = r"""
@@ -39,8 +42,10 @@ regex_str = [
 
 tokens_re = re.compile(r'(' + '|'.join(regex_str) + ')', re.VERBOSE | re.IGNORECASE)
 emoticon_re = re.compile(r'^' + emoticons_str + '$', re.VERBOSE | re.IGNORECASE)
+
 m = Mystem()
 prep_counter = 0
+
 
 def tokenize(s):
     return tokens_re.findall(s)
@@ -102,8 +107,7 @@ def convert_xml2tsv(raw_files_path):
         `rshb` int(11) DEFAULT NULL,
         PRIMARY KEY (`id`),
         UNIQUE KEY `id` (`twitid`)
-    """
-    """
+
         TTK
         `id` int(11) NOT NULL AUTO_INCREMENT,
         `twitid` bigint(32) NOT NULL DEFAULT '0',
@@ -120,6 +124,7 @@ def convert_xml2tsv(raw_files_path):
         UNIQUE KEY `id` (`twitid`),
         UNIQUE KEY `id_2` (`twitid`)
     """
+
     header_ttk = ['id', 'twitid', 'date', 'text', 'beeline', 'mts',
                   'megafon', 'tele2', 'rostelecom', 'komstar', 'skylink']
     header_ttk_names = ['beeline', 'mts', 'megafon', 'tele2',
@@ -136,18 +141,26 @@ def convert_xml2tsv(raw_files_path):
         print(str(i) + ". " + f)
         i += 1
 
-    file_ix = int(raw_input("Select file: "))
-
-    if file_ix > i:
-        print "Error: select file"
-        exit(0)
+    while True:
+        try:
+            file_ix = int(raw_input("Select file: "))
+            if 0 < file_ix < i:
+                break
+        except ValueError:
+            print "ERROR: select file from list"
 
     file_in = raw_files_path + files[file_ix]
 
     print "File type:"
-    print "1. ttk"
-    print "2. bank"
-    file_type = int(raw_input("Select type: "))
+    print "1. Telecommunication companies"
+    print "2. Banks"
+    while True:
+        try:
+            file_type = int(raw_input("Select data type: "))
+            if 0 < file_type < 3:
+                break
+        except ValueError:
+            print "ERROR: select file from list"
 
     if file_type == 1:
         header = header_ttk
@@ -155,11 +168,9 @@ def convert_xml2tsv(raw_files_path):
     elif file_type == 2:
         header = header_bank
         header_names = header_bank_names
-    else:
-        print "Error: select type"
-        exit(0)
 
     name = os.path.splitext(files[file_ix])[0]
+    start = time.time()
 
     with open(file_in) as xml_in, \
             open(".\\data\\parsed\\" + name + "_full.tsv", "wb") as tsv_out, \
@@ -192,4 +203,6 @@ def convert_xml2tsv(raw_files_path):
                         break
             tsv_out.writerow(row)
 
+    end = time.time()
+    print "INFO: Converting during " + str(end - start) + " sec"
     print "Successfully converted"

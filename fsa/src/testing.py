@@ -10,11 +10,10 @@
 import csv
 import json
 from collections import Counter
-
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.svm import SVC, LinearSVC
-from sklearn.metrics import classification_report
 import cPickle as pickle
+
+from sklearn.metrics import classification_report
+
 
 # from train_model import preprocess
 from preprocessing import preprocess
