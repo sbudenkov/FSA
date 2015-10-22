@@ -13,4 +13,4 @@ FSA include following features:
   * classification reports with plots
   
  ### How to use:
-  run __main__.py from fsa directory
+  run __main__.py
