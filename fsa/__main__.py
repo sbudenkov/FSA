@@ -9,9 +9,9 @@
 
 import csv
 
-from preprocessing import convert_xml2tsv
-from training import train
-from testing import test
+from src.preprocessing import convert_xml2tsv
+from src.training import train
+from src.testing import test
 
 
 # Hardcoded input files

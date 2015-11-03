@@ -11,15 +11,17 @@ import time
 import string
 import cPickle as pickle
 
-from sklearn.feature_extraction.text    import TfidfVectorizer
-from sklearn.naive_bayes                import MultinomialNB
-from sklearn.svm                        import SVC, LinearSVC
-from sklearn.linear_model               import SGDClassifier
-from sklearn.ensemble                   import RandomForestClassifier
-from sklearn.metrics                    import classification_report
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.naive_bayes import MultinomialNB
+from sklearn.svm import SVC, LinearSVC
+from sklearn.linear_model import SGDClassifier
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import classification_report
 
-from stemming       import Porter
-from preprocessing  import preprocess
+# from stemming       import Porter
+from preprocessing import preprocess
+
+
 # from word2vec import softVectorizer
 
 # from factory import create_factory, train_factory, test_factory
@@ -30,7 +32,8 @@ def stem(str_in):
     str = str.split()
     res = []
     for word in str:
-        new_word = Porter.stem(word)
+        # new_word = Porter.stem(word)
+        new_word = word
         res.append(new_word)
     return " ".join([ch for ch in res])
 
@@ -54,8 +57,6 @@ def prepare_data(f, categories, lowercase=True, stemming=False):
                 labels.append(1)
 
     return data, labels
-
-
 
 
 # Train model with pipeline and grid
@@ -124,9 +125,9 @@ def train(train_in, test_in, categories):
 
     elif (model_type == 6):
         print('word2vec FCM')
-        train_vectors, test_vectors = softVectorizer(train_data, test_data)
+        # train_vectors, test_vectors = softVectorizer(train_data, test_data)
     else:
-       exit()
+        exit()
 
 
     # print train_vectors.shape, len(train_data)
@@ -319,7 +320,7 @@ def train(train_in, test_in, categories):
                 break
 
         i += 1
-    # result_file = str(len(categories)) + 'classes_results.txt'
-    # with open(".\\results\\" + result_file, "wb") as result_out:
-    #     result_out.write(classification_report(test_labels, prediction_nb))
-    #
+        # result_file = str(len(categories)) + 'classes_results.txt'
+        # with open(".\\results\\" + result_file, "wb") as result_out:
+        #     result_out.write(classification_report(test_labels, prediction_nb))
+        #

@@ -16,7 +16,7 @@ import time
 import xmltodict
 from pymystem3 import Mystem
 
-from stemming import Porter
+# from stemming import Porter
 
 # from nltk.corpus import stopwords
 
@@ -82,8 +82,8 @@ def preprocess(s, lowercase=False, stemming=False):
         tokens = [token for token in tokens if token not in stop]
 
         # tokens = [token if token emoticon_re.search(token) else not in stop for token in tokens]
-    if stemming:
-        tokens = [token if emoticon_re.search(token) else Porter.stem(token) for token in tokens]
+    # if stemming:
+    #     tokens = [token if emoticon_re.search(token) else Porter.stem(token) for token in tokens]
     return tokens
 
 
@@ -144,7 +144,7 @@ def convert_xml2tsv(raw_files_path):
     while True:
         try:
             file_ix = int(raw_input("Select file: "))
-            if 0 < file_ix < i:
+            if 0 <= file_ix < i:
                 break
         except ValueError:
             print "ERROR: select file from list"
@@ -170,6 +170,9 @@ def convert_xml2tsv(raw_files_path):
         header_names = header_bank_names
 
     name = os.path.splitext(files[file_ix])[0]
+    if not os.path.exists(".\\data\\parsed\\"):
+        os.makedirs(".\\data\\parsed\\")
+
     start = time.time()
 
     with open(file_in) as xml_in, \
@@ -206,3 +209,65 @@ def convert_xml2tsv(raw_files_path):
     end = time.time()
     print "INFO: Converting during " + str(end - start) + " sec"
     print "Successfully converted"
+
+if __name__ == '__main__':
+    print "INFO: Stemming file: "
+    i = 0
+    parsed_files_path = "..\\data\\parsed\\"
+    files = os.listdir(parsed_files_path)
+
+    for f in files:
+        print(str(i) + ". " + f)
+        i += 1
+
+    while True:
+        try:
+            file_ix = int(raw_input("Select file: "))
+            if 0 <= file_ix < i:
+                break
+        except ValueError:
+            print "ERROR: select file from list"
+
+    file_in = parsed_files_path + files[file_ix]
+
+    name = os.path.splitext(files[file_ix])[0]
+    if not os.path.exists("..\\data\\stemmed\\"):
+        os.makedirs("..\\data\\stemmed\\")
+
+    start = time.time()
+
+    with open(file_in) as parsed_in, \
+         open("..\\data\\stemmed\\" + name + "_mystem.tsv", "wb") as mystem_out:
+         # open("..\\data\\stemmed\\" + name + "_porter.tsv", "wb") as porter_out, \
+
+        parsed_in = csv.reader(parsed_in, delimiter='\t')
+        mystem_out = csv.writer(mystem_out, delimiter='\t') #, quoting=csv.QUOTE_NONE
+
+        mystem = Mystem()
+        prep_counter = 0
+
+        for row in parsed_in:
+            exclude = ['\'', '\"', '.', ',', '!', '?', u'«', u'»']
+            s = ''.join(ch for ch in row[1].decode("utf-8") if ch not in exclude)
+
+            stemmed_tokens = m.lemmatize(s)
+            stemmed_tokens = [token if emoticon_re.search(token) else token.lower() for token in stemmed_tokens]
+
+            # punctuation = list(string.punctuation.decode("utf-8"))
+            # stop = punctuation
+            # stop = ['!', '"', '$', '%', '&', '\'', '(', ')', '*', '+', ',', '-', '.', '/',
+            #         ':', ';', '<', '=', '>', '?', '[', '\\', ']', '^', '_', '`', '{', '|', '}', '~'] #'@',
+            stop = ['rt', 'via', '...', "…".decode("utf-8")]
+            stemmed_tokens = [token if token not in stop else '' for token in stemmed_tokens]
+
+            stemmed_str = "".join([token for token in stemmed_tokens])
+            mystem_out.writerow([row[0], stemmed_str.encode("utf-8").replace('\n', ' ')])
+
+            # Print a status message every 1000th review
+            if prep_counter % 100. == 0.:
+                print "Lemmatize %d strings" % (prep_counter)
+
+            prep_counter += 1
+
+            # if (prep_counter == 31):
+            #     break
