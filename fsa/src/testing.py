@@ -11,8 +11,14 @@ import csv
 import json
 from collections import Counter
 import cPickle as pickle
+from gensim.models import Word2Vec
 
+from sklearn.manifold   import TSNE
+from sklearn.decomposition import PCA
 from sklearn.metrics import classification_report
+
+import matplotlib.pyplot as plt
+from matplotlib import rc
 
 
 # from train_model import preprocess
@@ -70,3 +76,50 @@ def test(categories):
             if (test_labels[i] != prediction_linear[i]):
                 result_out.write(test_labels[i] + " : " + prediction_linear[i] + '\t' + test_data[i].encode("utf-8") + '\n')
             i += 1
+
+
+if __name__ == '__main__':
+    rc('font', family='Arial')
+
+    print "INFO: Test word2vec model"
+    # model = Word2Vec.load("../models/300features_40minwords_10context_bank")
+    # model = Word2Vec.load("../models/300features_40minwords_10context_ttk")
+    # model = Word2Vec.load_word2vec_format('../models/news.model.bin.gz', binary=True)
+    model = Word2Vec.load_word2vec_format('../models/ruscorpora.model.bin.gz', binary=True)
+    word_vectors = model.syn0
+
+    print('Shape word_vectors: ', word_vectors.shape)
+    n_components = 2
+    pca = PCA(n_components)
+    pca_vectors = pca.fit_transform(word_vectors)
+
+    for X_transformed, title in [(pca_vectors, "PCA")]:
+        plt.figure(figsize=(8, 8))
+        # for i, target_name in zip(range(num_clusters), [str(ix) + ' кластер' for ix in range(num_clusters)]):
+        #     colorVal = scalarMap.to_rgba(i)
+        plt.plot(X_transformed[:1000, 0],
+                    X_transformed[:1000, 1]
+                    # ,
+                    # c=colorVal,
+                    # label=target_name.decode('utf8')
+                    )
+
+        for label, x, y in zip(model.index2word, X_transformed[:1000, 0], X_transformed[:1000, 1]):
+            plt.annotate(
+                label,
+                (x, y),
+                xytext=(0, 3),
+                textcoords = 'offset points', ha = 'left', va = 'bottom'
+            )
+
+        # plt.setp(plt.get_xticklabels(), visible=False)
+        # if "Incremental" in title:
+        #     err = np.abs(np.abs(X_pca) - np.abs(X_ipca)).mean()
+        #     plt.title(title + " of iris dataset\nMean absolute unsigned error "
+        #               "%.6f" % err)
+        # else:
+        #     plt.title(title + " of iris dataset")
+        plt.legend(loc="best")
+        # plt.axis([-4, 4, -1.5, 1.5])
+
+    plt.show()

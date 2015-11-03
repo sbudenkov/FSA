@@ -7,9 +7,13 @@
 #
 # *************************************** #
 
+import logging
 import time
 import string
 import cPickle as pickle
+import pandas as pd
+import numpy as np  # Make sure that numpy is imported
+from gensim.models import Word2Vec
 
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.naive_bayes import MultinomialNB
@@ -324,3 +328,62 @@ def train(train_in, test_in, categories):
         # with open(".\\results\\" + result_file, "wb") as result_out:
         #     result_out.write(classification_report(test_labels, prediction_nb))
         #
+
+
+if __name__ == '__main__':
+    print "INFO: Train word2vec model"
+    sentences = []
+
+    train = pd.read_csv('../data/stemmed/bank_train_mystem.tsv',
+                        # header=None,
+                        delimiter="\t",
+                        quoting=3)
+
+    test = pd.read_csv('../data/stemmed/bank_test_etalon_mystem.tsv',
+                       # header=None,
+                       delimiter="\t",
+                       quoting=3)
+
+    # train = train[pd.notnull(train[0])]
+    # test = test[pd.notnull(test[0])]
+
+    train.info()
+    for text in train.itertuples():
+        sentences.append(text[2].decode("utf-8").split())
+
+    for text in test.itertuples():
+        sentences.append(text[2].decode("utf-8").split())
+
+    print "INFO: Train data"
+    print train.head()
+    print "INFO: Test data"
+    print test.head()
+    # exit(0)
+
+    print "INFO: Start training"
+    start = time.time()
+    logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', \
+                        level=logging.INFO)
+
+    # Set values for various parameters
+    num_features = 300      # Word vector dimensionality
+    min_word_count = 40     # Minimum word count 40
+    num_workers = 4         # Number of threads to run in parallel
+    context = 10            # Context window size 10
+    downsampling = 1e-3     # Downsample setting for frequent words
+
+    model = Word2Vec(sentences, workers=num_workers,
+                     size=num_features, min_count=min_word_count,
+                     window=context, sample=downsampling, seed=1)
+
+    print "INFO: End training"
+    print "INFO: Training time " + str(time.time() - start)
+
+    # If you don't plan to train the model any further, calling
+    # init_sims will make the model much more memory-efficient.
+    model.init_sims(replace=True)
+
+    # It can be helpful to create a meaningful model name and
+    # save the model for later use. You can load it later using Word2Vec.load()
+    model_name = "../models/300features_40minwords_10context_bank"
+    model.save(model_name)

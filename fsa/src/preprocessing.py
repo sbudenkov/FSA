@@ -16,9 +16,8 @@ import time
 import xmltodict
 from pymystem3 import Mystem
 
-# from stemming import Porter
+from stemming import Porter
 
-# from nltk.corpus import stopwords
 
 emoticons_str = r"""
     (?:
@@ -189,7 +188,6 @@ def convert_xml2tsv(raw_files_path):
         # Write data
         for table in obj['pma_xml_export']['database']["table"]:
             row = []
-            row_text = []
             for column in table["column"]:
                 row.append(column["#text"].encode('utf8'))
                 if column["@name"] == "text":
@@ -268,6 +266,3 @@ if __name__ == '__main__':
                 print "Lemmatize %d strings" % (prep_counter)
 
             prep_counter += 1
-
-            # if (prep_counter == 31):
-            #     break
